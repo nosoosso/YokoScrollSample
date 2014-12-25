@@ -11,6 +11,11 @@ public class CollisionManager : MonoBehaviour
 		allCollidables = new Dictionary<ColliderType, List<CollidableObject>>();
 	}
 
+	/// <summary>
+	/// コライダーをリストに追加する
+	/// </summary>
+	/// <param name="c">追加するコライダー</param>
+	/// <param name="type">追加するコライダーのレイヤー</param>
 	public void AddCollision(CollidableObject c, ColliderType type)
 	{
 		if (allCollidables.ContainsKey(type))
@@ -25,11 +30,11 @@ public class CollisionManager : MonoBehaviour
 	}
 
 	/// <summary>
-	/// 
+	/// 与えられた当たり判定が特定のレイヤーの全てのオブジェクトと衝突しているか判定して、している場合そのコライダーを返す。
 	/// </summary>
-	/// <param name="collider"></param>
-	/// <param name="type"></param>
-	/// <returns></returns>
+	/// <param name="collider">衝突を判定する当たり判定のRect。数値はUnit換算。</param>
+	/// <param name="type">衝突を判定するレイヤー。ここで指定したレイヤーの全てのオブジェクトと当たり判定を比較して判定する。</param>
+	/// <returns>衝突を検知したコライダー。複数のコライダーと衝突している場合も、1つのコライダーしか返さない。衝突していない場合はnullを返す</returns>
 	public CollidableObject Collided(Rect collider, ColliderType type)
 	{
 		//TODO 指定したColliderTypeのキーをallCollidabledsが持っていない場合の処理
