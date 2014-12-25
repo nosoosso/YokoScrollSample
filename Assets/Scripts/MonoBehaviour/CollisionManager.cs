@@ -35,7 +35,7 @@ public class CollisionManager : MonoBehaviour
 	/// <param name="collider">衝突を判定する当たり判定のRect。数値はUnit換算。</param>
 	/// <param name="type">衝突を判定するレイヤー。ここで指定したレイヤーの全てのオブジェクトと当たり判定を比較して判定する。</param>
 	/// <returns>衝突を検知したコライダー。複数のコライダーと衝突している場合も、1つのコライダーしか返さない。衝突していない場合はnullを返す</returns>
-	public CollidableObject Collided(Rect collider, ColliderType type)
+	public CollidableObject CollidedCollider(Rect collider, ColliderType type)
 	{
 		//TODO 指定したColliderTypeのキーをallCollidabledsが持っていない場合の処理
 		foreach (CollidableObject c in allCollidables[type])

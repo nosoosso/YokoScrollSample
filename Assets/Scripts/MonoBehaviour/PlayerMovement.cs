@@ -133,7 +133,7 @@ public class PlayerMovement : MonoBehaviour
 		transform.Translate(vx * Time.deltaTime, 0, 0);
 
 		//衝突した障害物を取得(ある場合)
-		CollidableObject collisionX = collisionManager.Collided(collidable.GetRect(), ColliderType.Floor);
+		CollidableObject collisionX = collisionManager.CollidedCollider(collidable.GetRect(), ColliderType.Floor);
 		//障害物との衝突がある場合、めり込んでいるのを直す
 		if (collisionX != null)
 		{
@@ -160,7 +160,7 @@ public class PlayerMovement : MonoBehaviour
 
 		transform.Translate(0, vy * Time.deltaTime, 0);
 		//衝突した障害物を取得(ある場合)
-		CollidableObject collisionY = collisionManager.Collided(collidable.GetRect(), ColliderType.Floor);
+		CollidableObject collisionY = collisionManager.CollidedCollider(collidable.GetRect(), ColliderType.Floor);
 		//障害物との衝突がある場合
 		//めり込んでいるのを直した後、速度を0にする
 		if (collisionY != null)
