@@ -123,6 +123,9 @@ public class Movement : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// 現在のvx,vyなどの値によって実際に移動する
+	/// </summary>
 	private void Move()
 	{
 		#region 横に動く処理
