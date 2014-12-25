@@ -12,7 +12,7 @@ public class Movement : MonoBehaviour
 	public float MOVE_SPEED = 5;
 
 	/// <summary>
-	/// ジャンプ力k
+	/// ジャンプ力
 	/// </summary>
 	public float JUMP_FORCE = 3;
 
@@ -63,38 +63,17 @@ public class Movement : MonoBehaviour
 		if (Input.GetKey(KeyCode.RightArrow))
 		{
 			vx += MOVE_SPEED * Time.deltaTime;
+			facingRight = true;
 		}
 		else if (Input.GetKey(KeyCode.LeftArrow))
 		{
 			vx -= MOVE_SPEED * Time.deltaTime;
+			facingRight = false;
 		}
 		//左か右のキーが入力されていなかったとき
 		else
 		{
-			//右に動いているとき
-			if (vx > 0)
-			{
-				if (vx < brakingForce * Time.deltaTime)
-				{
-					vx = 0;
-				}
-				else
-				{
-					vx -= brakingForce * Time.deltaTime;
-				}
-			}
-			//左に動いているとき
-			else
-			{
-				if (vx > -brakingForce * Time.deltaTime)
-				{
-					vx = 0;
-				}
-				else
-				{
-					vx += brakingForce * Time.deltaTime;
-				}
-			}
+			Brake();
 		}
 		//最大速度に制限する
 		if (vx > maxVx)
@@ -110,14 +89,44 @@ public class Movement : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Space) && grounded)
 		{
 			vy = JUMP_FORCE;
+			//ジャンプしたので地面を離れた
 			grounded = false;
+		}
+	}
+
+	//キャラクターにブレーキをかける
+	private void Brake()
+	{
+		//右に動いているとき
+		if (vx > 0)
+		{
+			if (vx < brakingForce * Time.deltaTime)
+			{
+				vx = 0;
+			}
+			else
+			{
+				vx -= brakingForce * Time.deltaTime;
+			}
+		}
+		//左に動いているとき
+		else
+		{
+			if (vx > -brakingForce * Time.deltaTime)
+			{
+				vx = 0;
+			}
+			else
+			{
+				vx += brakingForce * Time.deltaTime;
+			}
 		}
 	}
 
 	private void Move()
 	{
 		#region 横に動く処理
-		
+
 		transform.Translate(vx * Time.deltaTime, 0, 0);
 
 		//衝突した障害物を取得(ある場合)
@@ -166,12 +175,18 @@ public class Movement : MonoBehaviour
 				transform.position = new Vector3(
 					transform.position.x,
 					collisionY.transform.position.y + collisionY.UnitHeight / 2 + collidable.UnitHeight / 2);
+				//地面についた
 				grounded = true;
 			}
 			vy = 0;
-			
+
 		}
 
+		//自由落下している場合は地面についていない
+		//この処理がないと、ある地面からジャンプせずに落下した場合に、空中でジャンプすることができてしまう
+		if (vy < 0) grounded = false;
+
+		//重力分vyを変化させる
 		vy += Constants.GRAVITY * Time.deltaTime;
 
 		#endregion
