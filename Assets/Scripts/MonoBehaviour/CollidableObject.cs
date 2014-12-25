@@ -14,10 +14,16 @@ public enum ColliderType
 /// <summary>
 /// 当たり判定をもつゲームオブジェクト
 /// </summary>
+//本来はColliderというようなクラス名にしたいのだが、その名前はUnityのものと紛らわしいので仕方なくこれにした。
 public class CollidableObject : MonoBehaviour
 {
-	//縦、横のピクセル数
+	/// <summary>
+	/// 当たり判定の幅(px)
+	/// </summary>
 	public int width;
+	/// <summary>
+	/// 当たり判定の高さ(px)
+	/// </summary>
 	public int height;
 
 	/// <summary>
