@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-//TODO Playerクラスと密結合になっているのを解消する
 /// <summary>
 /// キャラクターを移動するための機構
 /// </summary>
