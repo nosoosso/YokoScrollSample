@@ -3,20 +3,25 @@ using System.Collections.Generic;
 
 public class CollisionManager : MonoBehaviour
 {
+	//CollidaerTypeをキーにしてCollidableObjectのリストを格納する連想配列
 	private Dictionary<ColliderType, List<CollidableObject>> allCollidables;
 
 	void Start()
 	{
 		allCollidables = new Dictionary<ColliderType, List<CollidableObject>>();
-
-		allCollidables[ColliderType.Player] = new List<CollidableObject>();
-		allCollidables[ColliderType.Enemy] = new List<CollidableObject>();
-		allCollidables[ColliderType.Floor] = new List<CollidableObject>();
 	}
 
 	public void AddCollision(CollidableObject c, ColliderType type)
 	{
-		allCollidables[type].Add(c);
+		if (allCollidables.ContainsKey(type))
+		{
+			allCollidables[type].Add(c);
+		}
+		else
+		{
+			allCollidables[type] = new List<CollidableObject>();
+			AddCollision(c, type);
+		}
 	}
 
 	/// <summary>
@@ -27,6 +32,7 @@ public class CollisionManager : MonoBehaviour
 	/// <returns></returns>
 	public CollidableObject Collided(Rect collider, ColliderType type)
 	{
+		//TODO 指定したColliderTypeのキーをallCollidabledsが持っていない場合の処理
 		foreach (CollidableObject c in allCollidables[type])
 		{
 			//衝突を検知した
