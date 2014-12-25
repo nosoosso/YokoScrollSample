@@ -2,7 +2,7 @@
 using System.Collections;
 
 /// <summary>
-/// 当たり判定で分けた種類。UnityのLayerのようなもの(の予定)
+/// 当たり判定の種類。UnityのLayerのようなもの
 /// </summary>
 public enum ColliderType
 {
@@ -14,7 +14,7 @@ public enum ColliderType
 /// <summary>
 /// 当たり判定をもつゲームオブジェクト
 /// </summary>
-public abstract class CollidableObject : MonoBehaviour
+public class CollidableObject : MonoBehaviour
 {
 	//縦、横のピクセル数
 	public int width;
@@ -47,6 +47,7 @@ public abstract class CollidableObject : MonoBehaviour
 
 		//当たり判定のUIのプレハブが設定されていない場合何もしない。当たり判定も表示しない。
 		if (collisionUI == null) return;
+
 		//当たり判定をUIで表示する
 		Transform collisions = GameObject.Find("Collisions").transform;
 		var item = GameObject.Instantiate(collisionUI) as RectTransform;

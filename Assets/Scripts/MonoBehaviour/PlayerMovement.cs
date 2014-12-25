@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// キャラクターを移動するための機構
 /// </summary>
-public class Movement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
 	/// <summary>
 	/// 動く速さ

@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : CollidableObject
+public class Player : MonoBehaviour
 {
-	public Movement movement;
+	public PlayerMovement movement;
 
 	void Update()
 	{
