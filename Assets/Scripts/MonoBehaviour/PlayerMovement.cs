@@ -63,12 +63,20 @@ public class PlayerMovement : MonoBehaviour
 		if (Input.GetKey(KeyCode.RightArrow))
 		{
 			vx += MOVE_SPEED * Time.deltaTime;
-			facingRight = true;
+			if (!facingRight)
+			{
+				facingRight = true;
+				Flip();
+			}
 		}
 		else if (Input.GetKey(KeyCode.LeftArrow))
 		{
 			vx -= MOVE_SPEED * Time.deltaTime;
-			facingRight = false;
+			if (facingRight)
+			{
+				facingRight = false;
+				Flip();
+			}
 		}
 		//左か右のキーが入力されていなかったとき
 		else
@@ -92,6 +100,16 @@ public class PlayerMovement : MonoBehaviour
 			//ジャンプしたので地面を離れた
 			grounded = false;
 		}
+	}
+
+	/// <summary>
+	/// キャラクターの画像を反対に向ける
+	/// </summary>
+	private void Flip()
+	{
+		Vector3 theScale = transform.localScale;
+		theScale.x *= -1;
+		transform.localScale = theScale;
 	}
 
 	//キャラクターにブレーキをかける
