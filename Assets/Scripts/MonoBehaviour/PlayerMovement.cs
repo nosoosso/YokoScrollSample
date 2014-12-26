@@ -58,6 +58,10 @@ public class PlayerMovement : MonoBehaviour
 		ControllPlayer();
 		LimitVelocity();
 		Move();
+		//キャラクターが落下中なら地面についていない
+		//この処理がないと、ある地面からジャンプせずに落下した場合に、空中でジャンプすることができてしまう
+		if (IsFalling()) grounded = false;
+		AddGravity();
 	}
 
 	/// <summary>
@@ -109,7 +113,9 @@ public class PlayerMovement : MonoBehaviour
 		transform.localScale = theScale;
 	}
 
-	//キャラクターにブレーキをかける
+	/// <summary>
+	/// キャラクターにブレーキをかける
+	/// </summary>
 	private void Brake()
 	{
 		//右に動いているとき
@@ -139,7 +145,7 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	/// <summary>
-	// 速度を最大速度に制限する
+	/// 速度を最大速度に制限する
 	/// </summary>
 	private void LimitVelocity()
 	{
@@ -164,7 +170,7 @@ public class PlayerMovement : MonoBehaviour
 
 		//衝突した障害物を取得(ある場合)
 		CollidableObject collisionX = collisionManager.CollidedCollider(collidable.GetRect(), ColliderType.Floor);
-		//障害物との衝突がある場合、めり込んでいるのを直す
+		//障害物との衝突がある場合、めり込んでいるのを直した後、速度を0にする。
 		if (collisionX != null)
 		{
 			//左から衝突した
@@ -191,8 +197,7 @@ public class PlayerMovement : MonoBehaviour
 		transform.Translate(0, vy * Time.deltaTime, 0);
 		//衝突した障害物を取得(ある場合)
 		CollidableObject collisionY = collisionManager.CollidedCollider(collidable.GetRect(), ColliderType.Floor);
-		//障害物との衝突がある場合
-		//めり込んでいるのを直した後、速度を0にする
+		//障害物との衝突がある場合、めり込んでいるのを直した後、速度を0にする
 		if (collisionY != null)
 		{
 			//下から衝突した
@@ -212,17 +217,27 @@ public class PlayerMovement : MonoBehaviour
 				grounded = true;
 			}
 			vy = 0;
-
 		}
-
-		//自由落下している場合は地面についていない
-		//この処理がないと、ある地面からジャンプせずに落下した場合に、空中でジャンプすることができてしまう
-		if (vy < 0) grounded = false;
-
-		//重力分vyを変化させる
-		vy += Constants.GRAVITY * Time.deltaTime;
-
 		#endregion
 	}
 
+	/// <summary>
+	/// キャラクターが落下中かどうか
+	/// </summary>
+	/// <returns>落下中ならtrue違うならfalse</returns>
+	private bool IsFalling()
+	{
+		//落下している場合
+		if (vy < 0) return true;
+		else return false;
+	}
+
+	/// <summary>
+	/// 重力を加える
+	/// </summary>
+	private void AddGravity()
+	{
+		//重力分vyを変化させる
+		vy += Constants.GRAVITY * Time.deltaTime;
+	}
 }
