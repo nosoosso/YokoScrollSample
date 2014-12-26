@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 /// <summary>
-/// キャラクターを移動するための機構
+/// プレイヤーキャラクターを移動するための機構
 /// </summary>
 public class PlayerMovement : MonoBehaviour
 {
@@ -49,16 +50,20 @@ public class PlayerMovement : MonoBehaviour
 	{
 		collisionManager = GameObject.Find("CollisionManager(Clone)").GetComponent<CollisionManager>();
 		collidable = GetComponent<CollidableObject>();
+		if (!collidable) throw new Exception("ゲームオブジェクトにコンポーネントがセットされていません");
 	}
 
-	//TODO なんかのデザインパターン(Builder?)つかって特殊化する
 	public void PlayerUpdate()
 	{
-		CatchInput();
+		ControllPlayer();
+		LimitVelocity();
 		Move();
 	}
 
-	private void CatchInput()
+	/// <summary>
+	/// ユーザーの入力に合わせてキャラクターを操作する
+	/// </summary>
+	private void ControllPlayer()
 	{
 		if (Input.GetKey(KeyCode.RightArrow))
 		{
@@ -78,19 +83,11 @@ public class PlayerMovement : MonoBehaviour
 				Flip();
 			}
 		}
-		//左か右のキーが入力されていなかったとき
+		//左のキーも右のキーも入力されていなかったとき
 		else
 		{
+			//ブレーキをかける
 			Brake();
-		}
-		//最大速度に制限する
-		if (vx > maxVx)
-		{
-			vx = maxVx;
-		}
-		else if (vx < -maxVx)
-		{
-			vx = -maxVx;
 		}
 
 		//ジャンプキーが押されたとき
@@ -142,7 +139,22 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	/// <summary>
-	/// 現在のvx,vyなどの値によって実際に移動する
+	// 速度を最大速度に制限する
+	/// </summary>
+	private void LimitVelocity()
+	{
+		if (vx > maxVx)
+		{
+			vx = maxVx;
+		}
+		else if (vx < -maxVx)
+		{
+			vx = -maxVx;
+		}
+	}
+
+	/// <summary>
+	/// 現在のvx,vyなどの値によって実際にキャラクターを移動する
 	/// </summary>
 	private void Move()
 	{
